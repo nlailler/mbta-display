@@ -1,19 +1,13 @@
 import React, { useReducer } from 'react';
+import StoreReducer from './StoreReducer';
 
 export const DisplayContext = React.createContext({});
 
 export default function DisplayProvider(props) {
-  // const { children, value } = props;
   const { children } = props;
-  const reducer = (state, action) => {
-    switch (action.type) {
-    case 'increment':
-      return state;
-    default:
-      throw new Error();
-    }
-  };
+
   const initialState = {
+    isLoading: false,
     departures: [{
       carrier: 'AMTRACK',
       time: '6:15 PM',
@@ -23,7 +17,7 @@ export default function DisplayProvider(props) {
       status: 'ON TIME'
     }]
   };
-  const [state, ] = useReducer(reducer, initialState);
+  const [state, ] = useReducer(StoreReducer, initialState);
 
   return (
     <DisplayContext.Provider value={state}>

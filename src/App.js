@@ -1,11 +1,10 @@
 import React from "react";
-import DisplayProvider from './DisplayProvider';
+import DisplayProvider from './context/DisplayProvider';
 import DisplayContainer from './DisplayContainer';
 
 export default function App() {
-  const initialState = {};
   return (
-    <DisplayProvider value={initialState}>
+    <DisplayProvider>
       <DisplayContainer />
     </DisplayProvider>
   );

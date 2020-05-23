@@ -1,10 +1,15 @@
-import React, { useContext } from 'react';
+import React, { useContext,useEffect } from 'react';
 import { Box, List, ListItem } from '@material-ui/core';
 import moment from 'moment';
-import { DisplayContext }  from './DisplayProvider';
+import getData from './utils/getData';
+import { DisplayContext } from './context/DisplayProvider';
 import DisplayTable from './DisplayTable';
 
 export default function DisplayContainer() {
+  useEffect(()=> {
+    const departures = getData();
+  }, []);
+
   const { departures } = useContext(DisplayContext);
   const now = moment();
   return (
