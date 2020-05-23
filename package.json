@@ -6,6 +6,7 @@
   "scripts": {
     "start": "webpack-dev-server --mode development",
     "build": "webpack --mode development",
+    "heroku-prebuild": "npm install --dev",
     "lint": "eslint ."
   },
   "author": "",
