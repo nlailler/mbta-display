@@ -18,7 +18,7 @@ export default function DisplayTable(props) {
           >
             <Column label="Carrier" dataKey="carrier"flexGrow={1} width={100}/>
             <Column label="Time" dataKey="time" flexGrow={1} width={100} />
-            <Column label="Destination" dataKey="Destination" flexGrow={1} width={100} />
+            <Column label="Destination" dataKey="destination" flexGrow={1} width={100} />
             <Column label="Train#" dataKey="trainNumber" flexGrow={1} width={100} />
             <Column label="Track#" dataKey="trackNumber" flexGrow={1} width={100} />
             <Column label="Status" dataKey="status" flexGrow={1} width={100} />

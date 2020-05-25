@@ -4,28 +4,42 @@ import moment from 'moment';
 import getData from './utils/getData';
 import { DisplayContext } from './context/DisplayProvider';
 import DisplayTable from './DisplayTable';
+import useActions from './context/useActions';
 
 export default function DisplayContainer() {
-  useEffect(()=> {
-    const departures = getData();
+  const { dataLoaded } = useActions();
+
+  useEffect(() => {
+    (async () =>
+      dataLoaded({
+        departures: await getData(),
+      })
+    )();
   }, []);
 
-  const { departures } = useContext(DisplayContext);
+  const { isLoading, departures } = useContext(DisplayContext);
   const now = moment();
+  console.log(isLoading);
+  console.log(departures);
   return (
     <>
-      <List>
-        <ListItem dense>
-          <Box textAlign="left" width="25%">{now.format('dddd')}</Box>
-          <Box textAlign="center" width="50%">North Station Departures</Box>
-          <Box textAlign="right" width="25%">Current Time</Box>
-        </ListItem>
-        <ListItem dense>
-          <Box textAlign="left" width="50%">{now.format('MM-DD-YY')}</Box>
-          <Box textAlign="right" width="50%">{now.format('h:mm a')}</Box>
-        </ListItem>
-      </List>
-      <DisplayTable departures={departures} />
+      {isLoading
+        ? <div>Loading...</div>
+        : <>
+          <List>
+            <ListItem dense>
+              <Box textAlign="left" width="25%">{now.format('dddd')}</Box>
+              <Box textAlign="center" width="50%">North Station Departures</Box>
+              <Box textAlign="right" width="25%">Current Time</Box>
+            </ListItem>
+            <ListItem dense>
+              <Box textAlign="left" width="50%">{now.format('MM-DD-YY')}</Box>
+              <Box textAlign="right" width="50%">{now.format('h:mm a')}</Box>
+            </ListItem>
+          </List>
+          <DisplayTable departures={departures} />
+        </>
+      }
     </>
   );
 }
