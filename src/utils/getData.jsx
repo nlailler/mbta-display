@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 function isSubway(schedule) {
   return schedule.relationships.route.data.id === 'Orange'
     || schedule.relationships.route.data.id === 'Green-B'
@@ -11,7 +13,7 @@ function parseData(data) {
   const commuterRailSchedules = schedules.filter(ele => !isSubway(ele));
   return commuterRailSchedules.map(schedule => ({
     carrier: 'AMTRACK',
-    time: schedule.attributes.departure,
+    time: moment(schedule.attributes.departure_time).format('h:mm a'),
     destination: schedule.relationships.route.data.id,
     trainNumber: '1234',
     trackNumber: 'TBD',
