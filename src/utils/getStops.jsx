@@ -8,12 +8,12 @@ function parseStops(stops) {
 }
 
 export default async function getStops(predictions) {
-  const predictionIds = predictions.map(prediction => prediction.id).filter(id => id);
+  const predictionIds = predictions.map(prediction => prediction.stopId).filter(id => id);
   if(predictionIds.length === 0) {
     return {};
   }
   const uniqueStopIds = new Set(predictionIds);
-  const stopFilter = uniqueStopIds.join(',');
+  const stopFilter = Array.from(uniqueStopIds).join(',');
 
   const response = await fetch(`https://api-v3.mbta.com/stops/?filter[id]=${stopFilter}`);
   const data = await response.json();

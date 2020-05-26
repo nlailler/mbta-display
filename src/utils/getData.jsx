@@ -3,16 +3,16 @@ import getTrips from './getTrips';
 import getSchedules from './getSchedules';
 import getPredictions from './getPredictions';
 import getStops from './getStops';
-import { CARRIERS, TBD } from './constants';
+import { CARRIERS, STATUS, TBD, NORTH_STATION } from './constants';
 
 function parseData(
-  { tripIdToTrip, scheduleIdToSchedule, scheduleIdToPrediction, stopIdToTrackNumber },
+  { tripIdToTrip, scheduleIdToSchedule, tripIdToPrediction, stopIdToTrackNumber },
 ) {
   const schedules = Object.keys(scheduleIdToSchedule).map(scheduleId => {
     const schedule = scheduleIdToSchedule[scheduleId];
-    const prediction = scheduleIdToPrediction[scheduleId];
     const { tripId } = schedule;
     const trip = tripIdToTrip[tripId];
+    const prediction = tripIdToPrediction[tripId] || { status: STATUS.ON_TIME };
     const { stopId } = prediction;
     return {
       carrier: CARRIERS.MBTA,
@@ -20,8 +20,9 @@ function parseData(
       datetime: prediction.departureDatetime || schedule.departureDatetime,
       destination: trip.destination,
       trainNumber: trip.trainNumber,
-      trackNumber: stopId === TBD ? TBD : stopIdToTrackNumber[stopId],
-      status: prediction.status,
+      trackNumber: !stopId || stopId === NORTH_STATION
+        ? TBD : stopIdToTrackNumber[stopId],
+      status: prediction.status.toUpperCase(),
     };
   });
   return schedules;
@@ -30,14 +31,14 @@ function parseData(
 export default async function getData() {
   const routeIds = await getRoutes();
   const routeFilter = routeIds.join(',');
+  const tripIdToPrediction = await getPredictions();
   const tripIdToTrip = await getTrips(routeFilter);
   const scheduleIdToSchedule = await getSchedules(routeFilter);
-  const scheduleIdToPrediction = await getPredictions(scheduleIdToSchedule);
-  const stopIdToTrackNumber = getStops(Object.values(scheduleIdToPrediction));
+  const stopIdToTrackNumber = await getStops(Object.values(tripIdToPrediction));
   return parseData({
     tripIdToTrip,
     scheduleIdToSchedule,
-    scheduleIdToPrediction,
+    tripIdToPrediction,
     stopIdToTrackNumber,
   });
 }

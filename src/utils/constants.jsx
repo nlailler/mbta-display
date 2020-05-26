@@ -5,3 +5,4 @@ export const STATUS = {
 export const CARRIERS = {
   MBTA: 'MBTA',
 };
+export const NORTH_STATION = 'North Station';
