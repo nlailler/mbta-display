@@ -19,8 +19,6 @@ export default function DisplayContainer() {
 
   const { isLoading, departures } = useContext(DisplayContext);
   const now = moment();
-  console.log(isLoading);
-  console.log(departures);
   return (
     <>
       {isLoading

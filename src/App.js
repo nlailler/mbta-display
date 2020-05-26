@@ -6,14 +6,8 @@ import StoreReducer from './context/StoreReducer';
 export default function App() {
   const initialState = {
     isLoading: true,
-    departures: [{
-      carrier: 'AMTRACK',
-      time: '6:15 PM',
-      destination: 'Rockport',
-      trainNumber: '1234',
-      trackNumber: 'TBD',
-      status: 'ON TIME'
-    }]
+    departures: [],
+    dispatch: () => {console.error('dispatch not set');}
   };
 
   const [state, dispatch] = useReducer(StoreReducer, initialState);
