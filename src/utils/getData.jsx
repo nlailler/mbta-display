@@ -1,29 +1,42 @@
-import moment from 'moment';
+import getRoutes from './getRoutes';
+import getTrips from './getTrips';
+import getSchedules from './getSchedules';
+import getPredictions from './getPredictions';
+import getStops from './getStops';
+import { CARRIERS, TBD } from './constants';
 
-function isSubway(schedule) {
-  return schedule.relationships.route.data.id === 'Orange'
-    || schedule.relationships.route.data.id === 'Green-B'
-    || schedule.relationships.route.data.id === 'Green-C'
-    || schedule.relationships.route.data.id === 'Green-D'
-    || schedule.relationships.route.data.id === 'Green-E';
-}
-
-function parseData(data) {
-  const schedules = data.data;
-  const commuterRailSchedules = schedules.filter(ele => !isSubway(ele));
-  return commuterRailSchedules.map(schedule => ({
-    carrier: 'AMTRACK',
-    time: moment(schedule.attributes.departure_time).format('h:mm a'),
-    destination: schedule.relationships.route.data.id,
-    trainNumber: '1234',
-    trackNumber: 'TBD',
-    status: 'ON TIME'
-  }));
+function parseData(
+  { tripIdToTrip, scheduleIdToSchedule, scheduleIdToPrediction, stopIdToTrackNumber },
+) {
+  const schedules = Object.keys(scheduleIdToSchedule).map(scheduleId => {
+    const schedule = scheduleIdToSchedule[scheduleId];
+    const prediction = scheduleIdToPrediction[scheduleId];
+    const { tripId } = schedule;
+    const trip = tripIdToTrip[tripId];
+    const { stopId } = prediction;
+    return {
+      carrier: CARRIERS.MBTA,
+      time: prediction.departure || schedule.departure,
+      destination: trip.destination,
+      trainNumber: trip.trainNumber,
+      trackNumber: stopId === TBD ? TBD : stopIdToTrackNumber[stopId],
+      status: prediction.status,
+    };
+  });
+  return schedules;
 }
 
 export default async function getData() {
-  const response = await fetch('https://api-v3.mbta.com/schedules?include=prediction&filter[min_time]=00%3A00&filter[max_time]=23%3A55&filter[stop]=place-north&filter[direction_id]=0');
-  const data = await response.json();
-  console.log(parseData(data));
-  return parseData(data);
+  const routeIds = await getRoutes();
+  const routeFilter = routeIds.join(',');
+  const tripIdToTrip = await getTrips(routeFilter);
+  const scheduleIdToSchedule = await getSchedules(routeFilter);
+  const scheduleIdToPrediction = await getPredictions(scheduleIdToSchedule);
+  const stopIdToTrackNumber = getStops(Object.values(scheduleIdToPrediction));
+  return parseData({
+    tripIdToTrip,
+    scheduleIdToSchedule,
+    scheduleIdToPrediction,
+    stopIdToTrackNumber,
+  });
 }
