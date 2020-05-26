@@ -41,7 +41,9 @@ export default async function getPredictionsFromSchedules(scheduleIdToSchedule) 
   const filteredPredictionIds = predictionIds.filter(id => id);
   let predictionIdToPredictions = {};
   if(filteredPredictionIds.length > 0) {
-    const predictionFilter = predictionIds.join(',');
+    const predictionFilter = filteredPredictionIds.length === 1
+      ? filteredPredictionIds[0]
+      : predictionIds.filter(id => id).join(',');
     const response = await fetch(`https://api-v3.mbta.com/predictions?filter[stop]=place-north&filter[prediction]=${predictionFilter}`);
     const data = await response.json();
     predictionIdToPredictions = parsePredictions(data.data);
