@@ -4,6 +4,9 @@ import { Box } from '@material-ui/core';
 
 export default function DisplayTable(props) {
   const { departures } = props;
+  const sortedDepartures = departures.sort((a, b) => a.datetime - b.datetime);
+  const rowGetter = ({ index }) => sortedDepartures[index];
+
   return (
     <Box width="100%">
       <AutoSizer disableHeight>
@@ -14,7 +17,7 @@ export default function DisplayTable(props) {
             headerHeight={30}
             rowHeight={30}
             rowCount={departures.length}
-            rowGetter={({ index }) => departures[index]}
+            rowGetter={rowGetter}
           >
             <Column label="Carrier" dataKey="carrier"flexGrow={1} width={100}/>
             <Column label="Time" dataKey="time" flexGrow={1} width={100} />
