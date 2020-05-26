@@ -1,4 +1,4 @@
-import React, { useContext,useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Box, List, ListItem } from '@material-ui/core';
 import moment from 'moment';
 import getData from './utils/getData';
@@ -19,7 +19,13 @@ export default function DisplayContainer() {
 
   const { isLoading, departures } = useContext(DisplayContext);
   const now = moment();
-  const cutoff = moment(now).subtract(15, 'minutes');
+
+  /*
+    Only show future or recent departures. 30 minutes would normally not be
+    considered recent, but it makes it easier to see different train statuses
+    (i.e. less time dependent for demo purposes).
+  */
+  const cutoff = moment(now).subtract(30, 'minutes');
   const futureDepartures = departures.filter(departure => departure.datetime > moment(cutoff));
   return (
     <>

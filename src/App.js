@@ -7,7 +7,7 @@ export default function App() {
   const initialState = {
     isLoading: true,
     departures: [],
-    dispatch: () => {console.error('dispatch not set');}
+    dispatch: () => {console.error('dispatch not set');} // eslint-disable-line no-console
   };
 
   const [state, dispatch] = useReducer(StoreReducer, initialState);

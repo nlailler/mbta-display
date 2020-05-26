@@ -4,6 +4,8 @@ import { Box } from '@material-ui/core';
 
 export default function DisplayTable(props) {
   const { departures } = props;
+  
+  // Sort by departure time.
   const sortedDepartures = departures.sort((a, b) => a.datetime - b.datetime);
   const rowGetter = ({ index }) => sortedDepartures[index];
 
