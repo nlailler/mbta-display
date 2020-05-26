@@ -19,6 +19,8 @@ export default function DisplayContainer() {
 
   const { isLoading, departures } = useContext(DisplayContext);
   const now = moment();
+  const cutoff = now.subtract(15, 'minutes');
+  const futureDepartures = departures.filter(departure => departure.datetime > moment(cutoff));
   return (
     <>
       {isLoading
@@ -35,7 +37,7 @@ export default function DisplayContainer() {
               <Box textAlign="right" width="50%">{now.format('h:mm a')}</Box>
             </ListItem>
           </List>
-          <DisplayTable departures={departures} />
+          <DisplayTable departures={futureDepartures} />
         </>
       }
     </>

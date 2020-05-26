@@ -3,8 +3,10 @@ import moment from 'moment';
 function parseSchedules(schedules) {
   const scheduleIdToSchedule = {};
   const mapScheduleIdToSchedule = (acc, cur) => {
-    acc[cur.id] = {
-      departure: moment(cur.attributes.departure_time).format('h:mm a'),
+    const departureDatetime = moment(cur.attributes.departure_time);
+    acc[cur.id] = {      
+      departure: departureDatetime.format('h:mm a'),
+      departureDatetime,
       predictionId: cur.relationships.prediction.data ? cur.relationships.prediction.data.id : null,
       tripId: cur.relationships.trip.data.id,
     };

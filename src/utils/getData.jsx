@@ -17,6 +17,7 @@ function parseData(
     return {
       carrier: CARRIERS.MBTA,
       time: prediction.departure || schedule.departure,
+      datetime: prediction.departureDatetime || schedule.departureDatetime,
       destination: trip.destination,
       trainNumber: trip.trainNumber,
       trackNumber: stopId === TBD ? TBD : stopIdToTrackNumber[stopId],

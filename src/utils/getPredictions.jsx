@@ -1,10 +1,13 @@
+import moment from 'moment';
 import { STATUS, TBD } from './constants';
 
 function parsePredictions(predictions) {
   const predictionIdToPrediction = {};
   const mapPredictionIdToPrediction = (acc, cur) => {
+    const departureDatetime = moment(cur.attributes.departure_time);
     acc[cur.id] = {
-      departure: cur.attributes.departure_time,
+      departure: departureDatetime.format('h:mm a'),
+      departureDatetime,
       status: cur.attributes.status,
       stopId: cur.relationships.stop.data.id,
     };
