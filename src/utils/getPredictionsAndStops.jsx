@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { FILTERS } from './constants';
 
 function parsePredictions(predictions) {
   const tripIdToPrediction = {};
@@ -27,7 +28,7 @@ function parseStops(stops) {
 
 export default async function getPredictionsAndStops() {
   // By adding 'include=stop' we can get the relevant stop information too which is nice.
-  const response = await fetch(`https://api-v3.mbta.com/predictions?filter[stop]=place-north&filter[direction_id]=0&filter[route_type]=2&include=stop`);
+  const response = await fetch(`https://api-v3.mbta.com/predictions?${FILTERS.NORTH_STATION}&${FILTERS.DEPARTURES}&filter[route_type]=2&include=stop`);
   const data = await response.json();
   const { data: predictionData, included: stopData } = data;
   return {

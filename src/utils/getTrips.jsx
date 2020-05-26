@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { FILTERS } from './constants';
 
 function parseTrips(trips) {
   const tripIdToDestinationAndTrainNumber = {};
@@ -14,7 +15,7 @@ function parseTrips(trips) {
 
 export default async function getTrips(routeFilter) {
   const today = moment().format('YYYY-MM-DD');
-  const response = await fetch(`https://api-v3.mbta.com/trips/?filter[date]=${today}&filter[route]=${routeFilter}&filter[direction_id]=0`);
+  const response = await fetch(`https://api-v3.mbta.com/trips/?filter[date]=${today}&filter[route]=${routeFilter}&${FILTERS.DEPARTURES}`);
   const data = await response.json();
   return parseTrips(data.data);
 }
