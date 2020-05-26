@@ -19,7 +19,7 @@ export default function DisplayContainer() {
 
   const { isLoading, departures } = useContext(DisplayContext);
   const now = moment();
-  const cutoff = now.subtract(15, 'minutes');
+  const cutoff = moment(now).subtract(15, 'minutes');
   const futureDepartures = departures.filter(departure => departure.datetime > moment(cutoff));
   return (
     <>
