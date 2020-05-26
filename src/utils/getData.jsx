@@ -1,8 +1,7 @@
 import getRoutes from './getRoutes';
 import getTrips from './getTrips';
 import getSchedules from './getSchedules';
-import getPredictions from './getPredictions';
-import getStops from './getStops';
+import getPredictionsAndStops from './getPredictionsAndStops';
 import { CARRIERS, STATUS, TBD, NORTH_STATION } from './constants';
 
 function parseData(
@@ -31,10 +30,13 @@ function parseData(
 export default async function getData() {
   const routeIds = await getRoutes();
   const routeFilter = routeIds.join(',');
-  const tripIdToPrediction = await getPredictions();
+  const { tripIdToPrediction, stopIdToTrackNumber } = await getPredictionsAndStops();
+
+  // We could put the routes into a config file since they don't change often but
+  // it's fast enough to dynamically retrieve them.
   const tripIdToTrip = await getTrips(routeFilter);
   const scheduleIdToSchedule = await getSchedules(routeFilter);
-  const stopIdToTrackNumber = await getStops(Object.values(tripIdToPrediction));
+
   return parseData({
     tripIdToTrip,
     scheduleIdToSchedule,
