@@ -27,8 +27,9 @@ function parseStops(stops) {
 }
 
 export default async function getPredictionsAndStops() {
-  // By adding 'include=stop' we can get the relevant stop information too which is nice.
-  const response = await fetch(`https://api-v3.mbta.com/predictions?${FILTERS.NORTH_STATION}&${FILTERS.DEPARTURES}&filter[route_type]=2&include=stop`);
+  // Get all commuter rail predictions for departures out of North Station. By
+  // adding 'include=stop' we can get the relevant stop information too which is nice.
+  const response = await fetch(`https://api-v3.mbta.com/predictions?${FILTERS.NORTH_STATION}&${FILTERS.DEPARTURES}&${FILTERS.ROUTE_TYPES.COMMUTER_RAIL}&include=stop`);
   const data = await response.json();
   const { data: predictionData, included: stopData } = data;
   return {

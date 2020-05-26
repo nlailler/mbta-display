@@ -18,7 +18,8 @@ function parseSchedules(schedules) {
 
 export default async function getTrips(routeFilter) {
   const today = moment().format('YYYY-MM-DD');
-  const response = await fetch(`https://api-v3.mbta.com/schedules?${FILTERS.NORTH_STATION}&filter[route]=${routeFilter}&filter[date]=${today}&filter[direction_id]=0&include=prediction`);
+  // Get all departure schedules out of north station for the given routes.
+  const response = await fetch(`https://api-v3.mbta.com/schedules?${FILTERS.NORTH_STATION}&filter[route]=${routeFilter}&filter[date]=${today}&${FILTERS.DEPARTURES}&include=prediction`);
   const data = await response.json();
   return parseSchedules(data.data);
 }

@@ -11,6 +11,8 @@ function parseData(
     const schedule = scheduleIdToSchedule[scheduleId];
     const { tripId } = schedule;
     const trip = tripIdToTrip[tripId];
+    
+    // Assume no news is good news.
     const prediction = tripIdToPrediction[tripId] || { status: STATUS.ON_TIME };
     const { stopId } = prediction;
     return {
