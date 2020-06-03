@@ -1,0 +1,25 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+       - echo "Installing npm modules"
+       - npm ci
+       - echo "Finished installing npm modules"
+  pre_build:
+    commands:
+      - echo "Linting files"
+      - npm run lint
+      - echo "Finished linting files"
+      - echo "Running tests"
+      - npm run test
+      - echo "Finished running tests"
+  build:
+    commands:
+      - echo "Running npm build"
+      - npm run build
+      - echo "Finished build"
+artifacts:
+  files:
+    - '**/*'
+  base-directory: 'dist'
