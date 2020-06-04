@@ -6,4 +6,6 @@ Notes:
 * The page does not have live updates so you must manually reload the page to see changes.
 * The status and track number are driven by the predictions endpoint. Sometimes there's a weird state where a prediction containing an updated status is received, i.e. "Now Boarding" but the track number has not been updated yet.
 
-You can see the live version [here](https://mbta-display.herokuapp.com/).
+You can see the live versions here:
+- [Hosted with Heroku](https://mbta-display.herokuapp.com/)
+- [Hosted with AWS](http://nlailler-mbta-display.s3-website-us-east-1.amazonaws.com/)
