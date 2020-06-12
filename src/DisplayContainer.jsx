@@ -5,6 +5,7 @@ import getData from './utils/getData';
 import { DisplayContext } from './context/DisplayProvider';
 import DisplayTable from './DisplayTable';
 import useActions from './context/useActions';
+import { LOADING_TEXT, NORTH_STATION_DEPARTURES } from './utils/constants';
 
 export default function DisplayContainer() {
   const { dataLoaded } = useActions();
@@ -30,12 +31,12 @@ export default function DisplayContainer() {
   return (
     <>
       {isLoading
-        ? <div>Loading...</div>
+        ? <div>{LOADING_TEXT}</div>
         : <>
           <List>
             <ListItem dense>
               <Box textAlign="left" width="25%">{now.format('dddd')}</Box>
-              <Box textAlign="center" width="50%">North Station Departures</Box>
+              <Box textAlign="center" width="50%">{NORTH_STATION_DEPARTURES}</Box>
               <Box textAlign="right" width="25%">Current Time</Box>
             </ListItem>
             <ListItem dense>

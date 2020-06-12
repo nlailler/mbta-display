@@ -11,6 +11,8 @@ export const CARRIERS = {
 Object.freeze(CARRIERS);
 
 export const NORTH_STATION = 'North Station';
+export const LOADING_TEXT = 'Loading...';
+export const NORTH_STATION_DEPARTURES = 'North Station Departures';
 
 export const FILTERS = {
   NORTH_STATION: 'filter[stop]=place-north',
